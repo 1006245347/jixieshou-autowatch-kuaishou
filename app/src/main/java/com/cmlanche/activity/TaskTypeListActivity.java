@@ -75,8 +75,8 @@ public class TaskTypeListActivity extends AppCompatActivity {
             }
         });
 
-        new GetTaskListTask(this).execute();
-        new CheckPayTask(this).execute();
+//        new GetTaskListTask(this).execute();
+//        new CheckPayTask(this).execute();
     }
 
     public void updateList(List<AppInfo> list) {

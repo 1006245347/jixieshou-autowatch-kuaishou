@@ -31,6 +31,15 @@
             android:layout_centerVertical="true"
             android:text="快手" />
 
+<!--        <CheckBox-->
+<!--            android:id="@+id/cb_current"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_toRightOf="@id/name"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginLeft="20dp"-->
+<!--            />-->
+
 
         <TextView
             android:id="@+id/time"

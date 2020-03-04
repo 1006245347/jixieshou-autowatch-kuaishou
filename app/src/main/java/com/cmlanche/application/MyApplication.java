@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.cmlanche.activity.MainActivity;
 import com.cmlanche.activity.NewOrEditTaskActivity;
 import com.cmlanche.activity.TaskTypeListActivity;
+import com.cmlanche.common.Constants;
 import com.cmlanche.common.PackageUtils;
 import com.cmlanche.common.SPService;
 import com.cmlanche.common.leancloud.InitTask;
@@ -35,6 +36,7 @@ import com.squareup.otto.Subscribe;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,18 +62,21 @@ public class MyApplication extends Application {
     protected static MyApplication appInstance;
     private int screenWidth;
     private int screenHeight;
-    private boolean isVip = false;
+    private boolean isVip = true;
     private View floatView;
     private MainActivity mainActivity;
     private boolean isFirstConnectAccessbilityService = false;
     private boolean isStarted = false;
 
+    public AppInfo currentApp;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         Logger.setDebug(true);
-        initUmeng();
-        initLeancloud();
+//        initUmeng();
+//        initLeancloud();
         SPService.init(this);
         appInstance = this;
 
@@ -188,7 +193,7 @@ public class MyApplication extends Application {
     }
 
     public void setVip(boolean vip) {
-        isVip = vip;
+//        isVip = vip;
     }
 
     public MainActivity getMainActivity() {
@@ -233,7 +238,7 @@ public class MyApplication extends Application {
                         isFirstConnectAccessbilityService) {
                     // 服务岗连接上，可以点击快速启动，不需要跳转到机械手app去启动
                     isFirstConnectAccessbilityService = false;
-                    startTask(taskInfo.getAppInfos());
+                    startTask();
                 } else if(isStarted) {
                     // 已启动，则点击会触发暂停
                     if (TaskExecutor.getInstance().isForcePause()) {
@@ -309,8 +314,10 @@ public class MyApplication extends Application {
     /**
      * 开始执行任务
      */
-    public void startTask(List<AppInfo> appInfos) {
+    public void startTask() {
         TaskInfo taskInfo = new TaskInfo();
+        List<AppInfo> appInfos = new ArrayList<>();
+        appInfos.add(currentApp);
         taskInfo.setAppInfos(appInfos);
         TaskExecutor.getInstance().startTask(taskInfo);
     }

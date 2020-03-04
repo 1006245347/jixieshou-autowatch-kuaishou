@@ -17,7 +17,7 @@ public class DouyinFastScript extends BaseScript {
     private boolean isCheckedWozhidaole;
     // 是否检查到底部
     private boolean isCheckedBootom;
-    private int bottomMargin = 200;
+    private int bottomMargin = 500;
 
 
     public DouyinFastScript(AppInfo appInfo) {
@@ -48,19 +48,19 @@ public class DouyinFastScript extends BaseScript {
 
         int x = MyApplication.getAppInstance().getScreenWidth() / 2;
         int fromY = MyApplication.getAppInstance().getScreenHeight() - bottomMargin;
-        int toY = 100;
+        int toY = 500;
 
         new SwipStepBuilder().setPoints(new Point(x, fromY), new Point(x, toY)).get().execute();
     }
 
     @Override
     protected int getMinSleepTime() {
-        return 10000;
+        return 8000;
     }
 
     @Override
     protected int getMaxSleepTime() {
-        return 20000;
+        return 19000;
     }
 
     @Override
@@ -71,4 +71,5 @@ public class DouyinFastScript extends BaseScript {
         }
         return true;
     }
+
 }

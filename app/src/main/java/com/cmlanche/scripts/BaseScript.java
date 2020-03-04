@@ -33,17 +33,26 @@ public abstract class BaseScript implements IScript {
         while ((System.currentTimeMillis() - startTime < getTimeout())) {
             try {
                 if (isPause()) {
-                    Utils.sleep(2000);
+                    Thread.sleep(2000);
                     continue;
                 }
                 executeScript();
             } catch (Exception e) {
                 Logger.e("执行异常，脚本: " + appInfo.getName(), e);
+                break;
             } finally {
                 int t = getRandomSleepTime(getMinSleepTime(), getMaxSleepTime());
+                Logger.e("random time: " + t);
+
                 Logger.i("休眠：" + t);
-                Utils.sleep(t);
+                try {
+                    Thread.sleep(t);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
+                }
             }
+
         }
     }
 
@@ -128,4 +137,5 @@ public abstract class BaseScript implements IScript {
      * 执行脚本
      */
     protected abstract void executeScript();
+
 }

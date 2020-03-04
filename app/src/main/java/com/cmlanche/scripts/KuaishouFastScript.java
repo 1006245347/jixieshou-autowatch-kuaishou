@@ -43,12 +43,12 @@ public class KuaishouFastScript extends BaseScript {
 
     @Override
     protected int getMinSleepTime() {
-        return 10000;
+        return 9000;
     }
 
     @Override
     protected int getMaxSleepTime() {
-        return 20000;
+        return 18000;
     }
 
     @Override

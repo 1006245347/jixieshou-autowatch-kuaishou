@@ -46,6 +46,16 @@ public class TaskExecutor {
     public void startTask(final TaskInfo taskInfo) {
         this.taskInfo = taskInfo;
         this.initStartFlags();
+        if (scriptThread!= null){
+            scriptThread.interrupt();
+            scriptThread = null;
+        }
+
+        if (monitorThread!= null){
+            monitorThread.interrupt();
+            monitorThread = null;
+        }
+
         if(scriptThread == null) {
             scriptThread = new Thread(new Runnable() {
                 @Override
@@ -122,8 +132,14 @@ public class TaskExecutor {
                         } catch (Exception e) {
                             Logger.e("监控异常：" + e.getMessage(), e);
                         } finally {
-                            Utils.sleep(1000);
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                break;
+                            }
                         }
+
                     }
                 }
             });

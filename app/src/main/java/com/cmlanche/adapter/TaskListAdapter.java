@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +49,9 @@ public class TaskListAdapter extends BaseAdapter {
             holder.icon = view.findViewById(R.id.icon);
             holder.name = view.findViewById(R.id.name);
             holder.time = view.findViewById(R.id.time);
+
+//            holder.checked = view.findViewById(R.id.cb_current);
+
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -66,6 +70,8 @@ public class TaskListAdapter extends BaseAdapter {
             holder.icon.setImageResource(R.drawable.ks);
         }
         holder.time.setText(String.format("%d小时", appInfo.getPeriod()));
+
+//        holder.checked.setChecked(false);
         return view;
     }
 
@@ -73,6 +79,7 @@ public class TaskListAdapter extends BaseAdapter {
         ImageView icon;
         TextView name;
         TextView time;
+//        CheckBox checked;
     }
 
 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.cmlanche.adapter.TaskListAdapter;
 import com.cmlanche.application.MyApplication;
+import com.cmlanche.common.Constants;
 import com.cmlanche.common.DeviceUtils;
 import com.cmlanche.common.SPService;
 import com.cmlanche.common.leancloud.CheckUpdateTask;
@@ -47,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private TaskListAdapter taskListAdapter;
     private MaterialButton startBtn;
     private TextView descriptionView;
-    private List<AppInfo> appInfos = new ArrayList<>();
+    private List<AppInfo> appInfos = Constants.appInfos;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                MyApplication.getAppInstance().currentApp = appInfos.get(i);
                 gotoEditTaskActivity(taskListAdapter.getItem(i));
             }
         });
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 startService(new Intent(getApplicationContext(), MyAccessbilityService.class));
-                MyApplication.getAppInstance().startTask(appInfos);
+                MyApplication.getAppInstance().startTask();
             }
         });
 
@@ -136,12 +140,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             cardView.setVisibility(View.GONE);
             fab.setVisibility(View.VISIBLE);
+            appInfos.clear();
             appInfos.addAll(taskInfo.getAppInfos());
             taskListAdapter.notifyDataSetChanged();
         }
 
         // 检查更新
-        new CheckUpdateTask(this).execute();
+//        new CheckUpdateTask(this).execute();
     }
 
     @Override
@@ -250,6 +255,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkPkgValid() {
+        if (MyApplication.getAppInstance().currentApp != null && isAppExist(MyApplication.getAppInstance().currentApp.getPkgName())){
+            return true;
+        }
         for(AppInfo appInfo: appInfos) {
             if(!isAppExist(appInfo.getPkgName())) {
                 Toast.makeText(this, String.format("请先安装应用「%s」", appInfo.getAppName()), Toast.LENGTH_LONG).show();
